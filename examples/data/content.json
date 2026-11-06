@@ -9,29 +9,29 @@
    "desc": "Fast bullets. Hits ground and air.",
    "cost": 60,
    "damage": 4,
-   "range": 150,
+   "range": 94,
    "interval": 0.32,
    "targeting": "first",
    "projectile": "bullet",
    "hotkey": 1,
    "sprite": {
-    "turret": "tur_gun",
-    "tint": "#ffffff"
+	"turret": "tur_gun",
+	"tint": "#ffffff"
    },
    "sfx": "shot_gun",
    "levels": [
-    {
-     "cost": 55,
-     "damage": 6,
-     "range": 165,
-     "interval": 0.28
-    },
-    {
-     "cost": 110,
-     "damage": 9,
-     "range": 180,
-     "interval": 0.22
-    }
+	{
+	 "cost": 55,
+	 "damage": 6,
+	 "range": 103,
+	 "interval": 0.28
+	},
+	{
+	 "cost": 110,
+	 "damage": 9,
+	 "range": 112,
+	 "interval": 0.22
+	}
    ]
   },
   {
@@ -40,33 +40,33 @@
    "desc": "Heavy shells with splash. Ground only.",
    "cost": 90,
    "damage": 16,
-   "range": 150,
+   "range": 94,
    "interval": 1.3,
-   "splash": 64,
+   "splash": 40,
    "hits_air": false,
    "targeting": "strongest",
    "projectile": "shell",
    "hotkey": 2,
    "sprite": {
-    "turret": "tur_heavy_red",
-    "tint": "#ffffff"
+	"turret": "tur_heavy_red",
+	"tint": "#ffffff"
    },
    "sfx": "shot_cannon",
    "levels": [
-    {
-     "cost": 80,
-     "damage": 26,
-     "range": 160,
-     "interval": 1.2,
-     "splash": 72
-    },
-    {
-     "cost": 150,
-     "damage": 40,
-     "range": 175,
-     "interval": 1.05,
-     "splash": 84
-    }
+	{
+	 "cost": 80,
+	 "damage": 26,
+	 "range": 100,
+	 "interval": 1.2,
+	 "splash": 45
+	},
+	{
+	 "cost": 150,
+	 "damage": 40,
+	 "range": 109,
+	 "interval": 1.05,
+	 "splash": 52
+	}
    ]
   }
  ],
@@ -75,7 +75,7 @@
    "id": "soldier",
    "name": "Soldier",
    "hp": 20,
-   "speed": 70,
+   "speed": 44,
    "bounty": 4,
    "sprite": "soldier_green",
    "scale": 1.55
@@ -84,7 +84,7 @@
    "id": "scout",
    "name": "Scout",
    "hp": 13,
-   "speed": 125,
+   "speed": 78,
    "bounty": 3,
    "sprite": "soldier_brown",
    "scale": 1.4
@@ -93,41 +93,41 @@
  "waves": [
   {
    "groups": [
-    {
-     "enemy": "soldier",
-     "count": 6,
-     "interval": 0.9
-    }
+	{
+	 "enemy": "soldier",
+	 "count": 6,
+	 "interval": 0.9
+	}
    ],
    "bonus": 20
   },
   {
    "groups": [
-    {
-     "enemy": "soldier",
-     "count": 8,
-     "interval": 0.7
-    },
-    {
-     "enemy": "scout",
-     "count": 4,
-     "interval": 0.5
-    }
+	{
+	 "enemy": "soldier",
+	 "count": 8,
+	 "interval": 0.7
+	},
+	{
+	 "enemy": "scout",
+	 "count": 4,
+	 "interval": 0.5
+	}
    ],
    "bonus": 25
   },
   {
    "groups": [
-    {
-     "enemy": "scout",
-     "count": 10,
-     "interval": 0.45
-    },
-    {
-     "enemy": "soldier",
-     "count": 8,
-     "interval": 0.6
-    }
+	{
+	 "enemy": "scout",
+	 "count": 10,
+	 "interval": 0.45
+	},
+	{
+	 "enemy": "soldier",
+	 "count": 8,
+	 "interval": 0.6
+	}
    ],
    "bonus": 0
   }
@@ -135,57 +135,57 @@
  "map": {
   "cols": 14,
   "rows": 8,
-  "cell": 64,
+  "cell": 40,
   "path": [
    [
-    -1,
-    2
+	-1,
+	2
    ],
    [
-    4,
-    2
+	4,
+	2
    ],
    [
-    4,
-    6
+	4,
+	6
    ],
    [
-    9,
-    6
+	9,
+	6
    ],
    [
-    9,
-    2
+	9,
+	2
    ],
    [
-    14,
-    2
+	14,
+	2
    ]
   ],
   "blocked": [
    [
-    1,
-    0
+	1,
+	0
    ],
    [
-    7,
-    0
+	7,
+	0
    ],
    [
-    12,
-    5
+	12,
+	5
    ],
    [
-    2,
-    6
+	2,
+	6
    ],
    [
-    6,
-    4
+	6,
+	4
    ],
    [
-    11,
-    7
+	11,
+	7
    ]
   ]
  }

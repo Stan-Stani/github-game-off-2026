@@ -9,6 +9,7 @@ var build_id: StringName = &"gun"
 var info: Label
 var status: String = ""
 var _tex: Dictionary = {}
+const HUD_H: float = 34.0 ## status bar height under the map
 
 func tex(n: String) -> Texture2D:
 	if not _tex.has(n):
@@ -17,9 +18,9 @@ func tex(n: String) -> Texture2D:
 
 func _ready() -> void:
 	info = Label.new()
-	info.position = Vector2(16, 528)
-	info.add_theme_font_size_override("font_size", 18)
+	info.add_theme_font_size_override("font_size", 11)
 	add_child(info)
+	get_viewport().size_changed.connect(_layout)
 	restart()
 
 func restart() -> void:
@@ -29,9 +30,18 @@ func restart() -> void:
 	spawner = TDWaveSpawner.new()
 	spawner.configure(content)
 	add_child(spawner)
+	spawner.enemy_spawned.connect(func(en: TDEnemy) -> void: en.debug_draw = false) # the demo draws its own sprite + hp bar
 	spawner.all_waves_cleared.connect(func() -> void: status = "VICTORY! Press R to play again")
 	spawner.economy.defeated.connect(func() -> void: status = "DEFEAT - press R to retry")
 	status = "Space: start wave 1"
+	_layout()
+
+## Centres the map + status bar in the viewport.
+func _layout() -> void:
+	var map_px: Vector2 = spawner.map.size_px()
+	var view: Vector2 = get_viewport_rect().size
+	position = ((view - Vector2(map_px.x, map_px.y + HUD_H)) / 2.0).max(Vector2.ZERO).floor()
+	info.position = Vector2(0, map_px.y + 2)
 
 ## Builds the selected tower at a map cell. Returns true on success.
 func build_at(c: Vector2i) -> bool:
@@ -57,13 +67,13 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_R: restart()
 	var mb: InputEventMouseButton = event as InputEventMouseButton
 	if mb != null and mb.pressed:
-		var c: Vector2i = spawner.map.cell_at(get_global_mouse_position())
+		var c: Vector2i = spawner.map.cell_at(get_local_mouse_position())
 		if mb.button_index == MOUSE_BUTTON_LEFT: build_at(c)
 		elif mb.button_index == MOUSE_BUTTON_RIGHT: sell_at(c)
 
 func _process(_d: float) -> void:
 	var e: TDEconomy = spawner.economy
-	info.text = "Gold %d   Lives %d   Wave %d/%d   Build: %s (%d)  [1] Gatling [2] Cannon   %s" % [
+	info.text = "Gold %d   Lives %d   Wave %d/%d   Build: %s (%d)\n[1] Gatling [2] Cannon   %s" % [
 		e.gold, e.lives, spawner.wave_index + 1, spawner.waves.size(), content.tower_def(build_id).get("name", build_id),
 		content.tower_cost(build_id), status]
 	queue_redraw()
@@ -71,7 +81,7 @@ func _process(_d: float) -> void:
 func _draw() -> void:
 	var m: TDMap = spawner.map
 	var cs: float = m.cell_px
-	draw_rect(Rect2(0, 0, 1280, 720), Color(0.12, 0.16, 0.12))
+	draw_rect(Rect2(-position, get_viewport_rect().size), Color(0.12, 0.16, 0.12))
 	for y: int in m.rows:
 		for x: int in m.cols:
 			var c: Vector2i = Vector2i(x, y)
@@ -84,13 +94,14 @@ func _draw() -> void:
 		draw_texture_rect(tex("bush_big" if i % 2 == 0 else "rock_a"), Rect2(Vector2(c) * cs, Vector2(cs, cs)), false)
 		i += 1
 	for t: TDTower in spawner.towers:
-		var r: Rect2 = Rect2(t.position - Vector2(32, 32), Vector2(64, 64))
+		var r: Rect2 = Rect2(t.position - Vector2(cs, cs) / 2.0, Vector2(cs, cs))
 		draw_texture_rect(tex("base_1"), r, false)
 		draw_set_transform(t.position, t.aim_angle + PI / 2.0)
-		draw_texture_rect(tex("tur_gun" if t.id == &"gun" else "tur_heavy_red"), Rect2(-32, -32, 64, 64), false)
+		draw_texture_rect(tex("tur_gun" if t.id == &"gun" else "tur_heavy_red"), Rect2(-cs / 2.0, -cs / 2.0, cs, cs), false)
 		draw_set_transform(Vector2.ZERO)
 	for en: TDEnemy in spawner.enemies:
 		draw_set_transform(en.position, en.heading)
-		draw_texture_rect(tex("soldier_green" if en.id == &"soldier" else "soldier_brown"), Rect2(-24, -24, 48, 48), false)
+		var es: float = cs * 0.75 * float(content.enemies.get(en.id, {}).get("scale", 1.0))
+		draw_texture_rect(tex("soldier_green" if en.id == &"soldier" else "soldier_brown"), Rect2(-es / 2.0, -es / 2.0, es, es), false)
 		draw_set_transform(Vector2.ZERO)
-		draw_rect(Rect2(en.position + Vector2(-16, -28), Vector2(32.0 * clampf(en.hp / en.max_hp, 0.0, 1.0), 4)), Color(0.4, 1, 0.4))
+		draw_rect(Rect2(en.position + Vector2(-cs * 0.25, -cs * 0.44), Vector2(cs * 0.5 * clampf(en.hp / en.max_hp, 0.0, 1.0), 3)), Color(0.4, 1, 0.4))
