@@ -11,6 +11,9 @@ var status: String = ""
 var _tex: Dictionary = {}
 const HUD_H: float = 34.0 ## status bar height under the map
 
+## Toggle grid in game on/off
+var show_grid: bool = false
+
 func tex(n: String) -> Texture2D:
 	if not _tex.has(n):
 		_tex[n] = load("res://assets/sprites/%s.png" % n)
@@ -65,6 +68,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			KEY_SPACE:
 				if spawner.start_next_wave(): status = "Wave %d" % (spawner.wave_index + 1)
 			KEY_R: restart()
+			KEY_G: show_grid = not show_grid
 	var mb: InputEventMouseButton = event as InputEventMouseButton
 	if mb != null and mb.pressed:
 		var c: Vector2i = spawner.map.cell_at(get_local_mouse_position())
@@ -93,6 +97,20 @@ func _draw() -> void:
 	for c: Vector2i in m.blocked:
 		draw_texture_rect(tex("bush_big" if i % 2 == 0 else "rock_a"), Rect2(Vector2(c) * cs, Vector2(cs, cs)), false)
 		i += 1
+	## Draw grid if toggled on
+	if show_grid:
+		var grid_color := Color(5.511, 9.82, 8.233, 0.35)
+		var grid_width := m.cols * cs
+		var grid_height := m.rows * cs
+		
+		for  column in range(m.cols + 1):
+			var x := column * cs
+			draw_line(Vector2(x, 0), Vector2(x, grid_height), grid_color)
+			
+		for  row in range(m.rows + 1):
+			var y := row * cs
+			draw_line(Vector2(0, y), Vector2(grid_width, y), grid_color)
+		
 	for t: TDTower in spawner.towers:
 		var r: Rect2 = Rect2(t.position - Vector2(cs, cs) / 2.0, Vector2(cs, cs))
 		draw_texture_rect(tex("base_1"), r, false)
