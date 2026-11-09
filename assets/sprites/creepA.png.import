@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dmq5qod7b0lgi"
-path="res://.godot/imported/soldier_brown.png-92e7dd0c7fba2676d5bdd72c12054b63.ctex"
+uid="uid://ds85xfengfo0b"
+path="res://.godot/imported/creepA.png-8056c03c58ea21df2812d49af626b265.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/soldier_brown.png"
-dest_files=["res://.godot/imported/soldier_brown.png-92e7dd0c7fba2676d5bdd72c12054b63.ctex"]
+source_file="res://assets/sprites/creepA.png"
+dest_files=["res://.godot/imported/creepA.png-8056c03c58ea21df2812d49af626b265.ctex"]
 
 [params]
 

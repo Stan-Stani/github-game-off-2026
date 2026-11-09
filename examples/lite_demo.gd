@@ -34,6 +34,7 @@ func restart() -> void:
 	spawner.configure(content)
 	add_child(spawner)
 	spawner.enemy_spawned.connect(func(en: TDEnemy) -> void: en.debug_draw = false) # the demo draws its own sprite + hp bar
+	spawner.tower_placed.connect(func(t: TDTower) -> void: t.debug_draw = false) # its gray debug square would cover the sprites
 	spawner.all_waves_cleared.connect(func() -> void: status = "VICTORY! Press R to play again")
 	spawner.economy.defeated.connect(func() -> void: status = "DEFEAT - press R to retry")
 	status = "Space: start wave 1"
@@ -114,12 +115,13 @@ func _draw() -> void:
 	for t: TDTower in spawner.towers:
 		var r: Rect2 = Rect2(t.position - Vector2(cs, cs) / 2.0, Vector2(cs, cs))
 		draw_texture_rect(tex("base_1"), r, false)
+		draw_arc(t.position, t.range_px, 0, TAU, 48, Color(1, 1, 1, 0.15)) # range ring, was drawn by the tower's debug_draw
 		draw_set_transform(t.position, t.aim_angle + PI / 2.0)
 		draw_texture_rect(tex("tur_gun" if t.id == &"gun" else "tur_heavy_red"), Rect2(-cs / 2.0, -cs / 2.0, cs, cs), false)
 		draw_set_transform(Vector2.ZERO)
 	for en: TDEnemy in spawner.enemies:
 		draw_set_transform(en.position, en.heading)
 		var es: float = cs * 0.75 * float(content.enemies.get(en.id, {}).get("scale", 1.0))
-		draw_texture_rect(tex("soldier_green" if en.id == &"soldier" else "soldier_brown"), Rect2(-es / 2.0, -es / 2.0, es, es), false)
+		draw_texture_rect(tex("creepA" if en.id == &"soldier" else "creepB"), Rect2(-es / 2.0, -es / 2.0, es, es), false)
 		draw_set_transform(Vector2.ZERO)
 		draw_rect(Rect2(en.position + Vector2(-cs * 0.25, -cs * 0.44), Vector2(cs * 0.5 * clampf(en.hp / en.max_hp, 0.0, 1.0), 3)), Color(0.4, 1, 0.4))
