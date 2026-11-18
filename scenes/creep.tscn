@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://degybbhx8bwa8"]
+
+[ext_resource type="Script" uid="uid://d2e4hshi10ao2" path="res://scripts/creep.gd" id="1_tawqf"]
+[ext_resource type="SpriteFrames" uid="uid://dbdybgwm4s6xe" path="res://sprites/creepB.aseprite" id="2_5eihe"]
+[ext_resource type="SpriteFrames" uid="uid://b4jylytcm8h5q" path="res://sprites/creep_health.aseprite" id="3_5eihe"]
+[ext_resource type="Script" uid="uid://dk5sgpav2y1cp" path="res://scripts/health_sprite.gd" id="4_hkahe"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_61w15"]
+size = Vector2(10, 18)
+
+[node name="Creep" type="PathFollow2D" unique_id=1672292608]
+loop = false
+script = ExtResource("1_tawqf")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1429328644]
+scale = Vector2(1.0000001, 1.0000001)
+sprite_frames = ExtResource("2_5eihe")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1667910389]
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1753272075]
+shape = SubResource("RectangleShape2D_61w15")
+
+[node name="HealthSprite" type="AnimatedSprite2D" parent="." unique_id=425184196]
+position = Vector2(0, -13)
+sprite_frames = ExtResource("3_5eihe")
+script = ExtResource("4_hkahe")

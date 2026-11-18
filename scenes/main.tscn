@@ -1,3 +1,62 @@
 [gd_scene format=3 uid="uid://b6ij82cikktx8"]
 
+[ext_resource type="Script" uid="uid://b6bhknvug87fn" path="res://scripts/main.gd" id="1_o5qli"]
+[ext_resource type="SpriteFrames" uid="uid://dl4b68ro3suyk" path="res://sprites/towerA.aseprite" id="2_0wfyh"]
+[ext_resource type="Script" uid="uid://dbfgbma1h27c5" path="res://scripts/tower.gd" id="2_sugp2"]
+
+[sub_resource type="Curve2D" id="Curve2D_0wfyh"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 13, 24, 0, 0, 0, 0, 136, 24, 0, 0, 0, 0, 136, 88, 0, 0, 0, 0, 224, 88)
+}
+point_count = 4
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_61w15"]
+
 [node name="Main" type="Node2D" unique_id=551962981]
+script = ExtResource("1_o5qli")
+
+[node name="SpawnTimer" type="Timer" parent="." unique_id=1140042218]
+wait_time = 3.0
+autostart = true
+
+[node name="Path2D" type="Path2D" parent="." unique_id=1606487232]
+unique_name_in_owner = true
+curve = SubResource("Curve2D_0wfyh")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=814908147]
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer" unique_id=1861576379]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/VBoxContainer" unique_id=462385633]
+layout_mode = 2
+
+[node name="HealthLabelLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer" unique_id=1897573677]
+layout_mode = 2
+text = "Health:"
+
+[node name="HealthAmountLabel" type="Label" parent="CanvasLayer/VBoxContainer/HBoxContainer" unique_id=1525121773]
+unique_name_in_owner = true
+layout_mode = 2
+text = "5"
+
+[node name="Tower" type="Area2D" parent="." unique_id=188789259]
+position = Vector2(152, 112)
+collision_layer = 2
+script = ExtResource("2_sugp2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Tower" unique_id=745298002]
+scale = Vector2(5, 5)
+shape = SubResource("CircleShape2D_61w15")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Tower" unique_id=223238241]
+sprite_frames = ExtResource("2_0wfyh")
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="area_entered" from="Tower" to="Tower" method="_on_area_entered"]
+[connection signal="area_exited" from="Tower" to="Tower" method="_on_area_exited"]
