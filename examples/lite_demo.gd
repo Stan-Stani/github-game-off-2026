@@ -117,11 +117,11 @@ func _draw() -> void:
 		draw_texture_rect(tex("base_1"), r, false)
 		draw_arc(t.position, t.range_px, 0, TAU, 48, Color(1, 1, 1, 0.15)) # range ring, was drawn by the tower's debug_draw
 		draw_set_transform(t.position, t.aim_angle + PI / 2.0)
-		draw_texture_rect(tex("tur_gun" if t.id == &"gun" else "tur_heavy_red"), Rect2(-cs / 2.0, -cs / 2.0, cs, cs), false)
+		draw_texture_rect(tex("tur_gun" if t.id == &"gun" else "gunB"), Rect2(-cs / 2.0, -cs / 2.0, cs, cs), false)
 		draw_set_transform(Vector2.ZERO)
 	for en: TDEnemy in spawner.enemies:
 		draw_set_transform(en.position, en.heading)
 		var es: float = cs * 0.75 * float(content.enemies.get(en.id, {}).get("scale", 1.0))
-		draw_texture_rect(tex("creepA" if en.id == &"soldier" else "creepB"), Rect2(-es / 2.0, -es / 2.0, es, es), false)
+		draw_texture_rect(tex("creepB" if en.id == &"soldier" else "creepA"), Rect2(-es / 2.0, -es / 2.0, es, es), false)
 		draw_set_transform(Vector2.ZERO)
 		draw_rect(Rect2(en.position + Vector2(-cs * 0.25, -cs * 0.44), Vector2(cs * 0.5 * clampf(en.hp / en.max_hp, 0.0, 1.0), 3)), Color(0.4, 1, 0.4))
